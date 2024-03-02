@@ -1,0 +1,51 @@
+ip pool :
+[admin@taib] > ip pool add name=5mbps ranges=192.168.11.2-192.168.11.254
+[admin@taib] > ip pool print
+
+ppp profile :
+[admin@taib] > ppp profile add name=taib@5mbps local-address=192.168.11.1 
+remote-address=5mbps dns-server=8.8.8.8
+
+ppp secret:
+[admin@taib] > ppp secret add name=taib password=taib profile=taib@5mbps
+service=pppoe
+
+pppoe server:
+[admin@taib] > interface pppoe-server server add 
+service-name=taib@5mbps interface=ether3_LAN 
+default-profile=default keepalive-timeout=10 
+one-session-per-host=yes authentication=pap,chap,mschap1,mschap2
+
+[admin@taib] > interface pppoe-server server enable numbers=0
+
+[admin@taib] > ppp secret set taib service=pppo
+
+
+#making pppoe dial-up interface in linux using "nmcli" command
+#for user and password
+
+taib@taib-stoner:~/Documents/Networking/mikrotik/pppoe_server$ 
+sudo nmcli connection edit type pppoe
+nmcli> set pppoe.username taib
+nmcli> set pppoe.password taib
+nmcli> save
+
+taib@taib-stoner:~/Documents/Networking/mikrotik/pppoe_server$ 
+nmcli connection show
+
+######################################################################
+#NAME                      UUID                                  TYPE      DEVICE 
+#pppoe                     252faa35-3bbc-4e9a-9aa4-74ae04434e7a  pppoe     enp7s0
+########################################################################
+
+taib@taib-stoner:~/Documents/Networking/mikrotik/pppoe_server$ 
+nmcli connection delete 252faa35-3bbc-4e9a-9aa4-74ae04434e7a
+
+#restart network manager
+taib@taib-stoner:~/Documents/Networking/mikrotik/pppoe_server$
+sudo systemctl restart NetworkManager
+
+#bring back network wired interface
+taib@taib-stoner:~/Documents/Networking/mikrotik/pppoe_server$
+sudo nano /etc/NetworkManager/NetworkManager.conf
+##now do managed=true [frome flase] 

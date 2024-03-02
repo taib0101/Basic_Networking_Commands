@@ -1,0 +1,16 @@
+[admin@taib] > interface pppoe-client add name=pppoe_out 
+interface=ether1_WAN 
+user=sk@taib827/5/a password=01914258188 add-default-route=yes 
+allow=pap,chap,mschap1,mschap2
+
+[admin@taib] > interface pppoe-client enable pppoe_out
+
+[admin@taib] > ip dns set server=8.8.8.8 allow-remote-request=yes
+
+[admin@taib] > ip firewall nat add chain=srcnat action=masquerade
+
+[admin@taib] > ip address add address=192.168.10.1/24 interface=ether2_LAN
+
+[admin@taib] > ip dhcp-server setup
+#Select interface to run DHCP server on 
+dhcp server interface: ether2_LAN
