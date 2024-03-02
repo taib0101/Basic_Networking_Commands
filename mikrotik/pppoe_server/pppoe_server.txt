@@ -18,7 +18,7 @@ one-session-per-host=yes authentication=pap,chap,mschap1,mschap2
 
 [admin@taib] > interface pppoe-server server enable numbers=0
 
-[admin@taib] > ppp secret set taib service=pppo
+[admin@taib] > ppp secret set taib service=pppoe
 
 
 #making pppoe dial-up interface in linux using "nmcli" command
