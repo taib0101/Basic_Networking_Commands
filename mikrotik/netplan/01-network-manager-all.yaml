@@ -1,0 +1,16 @@
+#keep this file /etc/netplan 
+# Let NetworkManager manage all devices on this system
+network:
+  version: 2
+  renderer: NetworkManager
+  ethernets:
+    enp7s0:
+      dhcp4: yes
+      addresses: [192.168.88.2/24]
+      routes:
+        -  to: default
+           via: 192.168.88.1
+
+
+#sudo netplan try
+#sudo netplan apply
