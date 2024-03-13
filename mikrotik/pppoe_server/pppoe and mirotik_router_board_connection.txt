@@ -1,0 +1,8 @@
+#1.Fist configure /etc/netplan/01-network-manager-all.yaml
+#2.give commands bellow
+#$sudo netplan try
+#$sudo netplan apply
+#$nmcli connection up netplan-enp7s0
+#goto routeros board and connect with mac or ipv6
+#$nmcli connection up pppoe
+
