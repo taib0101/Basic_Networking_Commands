@@ -49,3 +49,8 @@ sudo systemctl restart NetworkManager
 taib@taib-stoner:~/Documents/Networking/mikrotik/pppoe_server$
 sudo nano /etc/NetworkManager/NetworkManager.conf
 ##now do managed=true [frome flase] 
+#how a interface get a host
+#answer ip pool ranges -> ppp profile local,remote,name -> ppp secret profile,name,password,service
+#interface pppoe-server interface,default-profile
+#after giving the user and password on your pc it will automatic find your ip from given pool on router
+#and which interface is connected 
