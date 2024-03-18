@@ -1,0 +1,39 @@
+[admin@taib] > ip address add address=192.168.11.1/30 interface=ether3 
+#address will be assigned here as default gateway
+[admin@taib] > ip address print
+
+#Flags: D - DYNAMIC
+#Columns: ADDRESS, NETWORK, INTERFACE
+##   ADDRESS          NETWORK       INTERFACE
+#0   192.168.12.1/29  192.168.12.0  ether4      
+#1 D 10.1.9.138/32    192.168.8.1   pppoe_out : pppoe_client   
+#2 D 192.168.10.1/32  192.168.10.2  <pppoe-taib> : pppoe_server
+#3   192.168.11.1/30  192.168.11.0  ether3
+
+[admin@taib] > ip dns set server=8.8.8.8 allow-remote-requests=yes
+[admin@taib] > ip dns print
+
+[admin@taib] > ip firewall nat add action=masquerade chain=srcnat 
+[admin@taib] > ip firewall nat print
+#Flags: X - disabled, I - invalid; D - dynamic 
+# 0    chain=srcnat action=masquerade
+
+[admin@taib] > ip dhcp-server setup                                 
+#Select interface to run DHCP server on 
+#
+#dhcp server interface: ether3
+#Select network for DHCP addresses 
+#
+#dhcp address space: 192.168.11.0/30
+#Select gateway for given network 
+#
+#gateway for dhcp network: 192.168.11.1
+#Select pool of ip addresses given out by DHCP server 
+#
+#addresses to give out: 192.168.11.2
+#Select DNS servers 
+#
+#dns servers: 8.8.8.8
+#Select lease time 
+#
+#lease time: 1800
