@@ -1,0 +1,28 @@
+[admin@taib] > queue simple add name=icc target=192.168.11.0/27 
+               max-limit=20M/20M
+#target will get the network address for pool or block
+#it can get also user or host ip like bellow
+#[admin@taib] > queue simple add name=icc target=192.168.11.2 
+#               max-limit=20M/20M
+#now make child queue 
+
+[admin@taib] > queue simple add name=icc_pc1 target=192.168.11.30 
+               max-limit=12M/12M parent=icc priority=1/1
+[admin@taib] > queue simple add name=icc_pc2 target=192.168.11.29 
+               max-limit=7M/7M parent=icc priority=2/2
+[admin@taib] > queue simple print
+
+#Flags: X - disabled, I - invalid; D - dynamic 
+# 0    name="icc" target=192.168.11.0/27 parent=none packet-marks="" priority=8/8 
+#      queue=default-small/default-small limit-at=0/0 max-limit=20M/20M 
+#      burst-limit=0/0 burst-threshold=0/0 burst-time=0s/0s bucket-size=0.1/0.1 
+#
+# 1    name="icc_pc1" target=192.168.11.30/32 parent=icc packet-marks="" 
+#      priority=1/1 queue=default-small/default-small limit-at=0/0 
+#      max-limit=12M/12M burst-limit=0/0 burst-threshold=0/0 burst-time=0s/0s 
+#      bucket-size=0.1/0.1 
+#
+# 2    name="icc_pc2" target=192.168.11.29/32 parent=icc packet-marks="" 
+#      priority=2/2 queue=default-small/default-small limit-at=0/0 
+#      max-limit=7M/7M burst-limit=0/0 burst-threshold=0/0 burst-time=0s/0s 
+#      bucket-size=0.1/0.1

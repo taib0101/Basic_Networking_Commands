@@ -1,0 +1,50 @@
+[admin@taib] > queue type add name=icc_upload kind=pcq pcq-classifier=src-address pcq-rate=5M
+[admin@taib] > queue type add name=icc_download kind=pcq pcq-classifier=dst-address pcq-rate=5M
+[admin@taib] > queue type print
+#Flags: * - default 
+# 0 * name="default" kind=pfifo pfifo-limit=50 
+#
+# 1 * name="ethernet-default" kind=pfifo pfifo-limit=50 
+#
+# 2 * name="wireless-default" kind=sfq sfq-perturb=5 sfq-allot=1514 
+#
+# 3 * name="synchronous-default" kind=red red-limit=60 red-min-threshold=10 red-max-threshold=50 
+#     red-burst=20 red-avg-packet=1000 
+#
+# 4 * name="hotspot-default" kind=sfq sfq-perturb=5 sfq-allot=1514 
+#
+# 5   name="icc_upload" kind=pcq pcq-rate=5M pcq-limit=50KiB pcq-classifier=src-address 
+#     pcq-total-limit=2000KiB pcq-burst-rate=0 pcq-burst-threshold=0 pcq-burst-time=10s 
+#     pcq-src-address-mask=32 pcq-dst-address-mask=32 pcq-src-address6-mask=128 
+#     pcq-dst-address6-mask=128 
+#
+# 6   name="icc_download" kind=pcq pcq-rate=5M pcq-limit=50KiB pcq-classifier=dst-address 
+#     pcq-total-limit=2000KiB pcq-burst-rate=0 pcq-burst-threshold=0 pcq-burst-time=10s 
+#     pcq-src-address-mask=32 pcq-dst-address-mask=32 pcq-src-address6-mask=128 
+#     pcq-dst-address6-mask=128 
+#
+# 7 * name="pcq-upload-default" kind=pcq pcq-rate=0 pcq-limit=50KiB pcq-classifier=src-address 
+
+#difference between pcq and simple queue is pcq contains cache server like FNA,GGC,BDIX
+#.as dst for destination ip of cache server.pcq is mainly per connection query
+#we can configure it for pppoe,dhcp,static connection
+#for "target" block or single user can use on it. 
+
+[admin@taib] > queue simple add name=icc target=192.168.11.0/29 dst=[cache ip] 
+               queue=icc_upload/icc_download 
+
+[admin@taib] > queue simple print
+#Flags: X - disabled, I - invalid; D - dynamic 
+# 0    name="icc" target=192.168.11.0/29 parent=none packet-marks="" priority=1/1 
+#      queue=icc_upload/icc_download limit-at=0/0 max-limit=0/0 burst-limit=0/0 burst-threshold=0/0 
+#      burst-time=0s/0s bucket-size=0.1/0.1
+
+#set the block priority
+[admin@taib] > queue simple set numbers=0 priority=1/1
+
+
+
+#------------------------------------------------------****-----------------------------------------
+#we can configure it , without set the queue type just bellow
+
+[admin@taib] > queue simple add name=icc2 target=192.168.10.0/29 dst=[cache ip] max-limit=3M/3M
