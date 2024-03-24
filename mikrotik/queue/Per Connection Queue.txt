@@ -26,9 +26,12 @@
 # 7 * name="pcq-upload-default" kind=pcq pcq-rate=0 pcq-limit=50KiB pcq-classifier=src-address 
 
 #difference between pcq and simple queue is pcq contains cache server like FNA,GGC,BDIX
-#.as dst for destination ip of cache server.pcq is mainly per connection query
+#.as dst for destination ip of cache server.pcq is mainly per connection queue
+#for all internet cache server we don't need to assign "dst ip"
 #we can configure it for pppoe,dhcp,static connection
 #for "target" block or single user can use on it. 
+#if we want to equal distribute the bandwidth to all host or user in a single block or pool
+#we don't need to do parent child but for in simple queue
 
 [admin@taib] > queue simple add name=icc target=192.168.11.0/29 dst=[cache ip] 
                queue=icc_upload/icc_download 
